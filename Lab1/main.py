@@ -74,18 +74,21 @@ def optim(func, start, eps):
 
     ax.contour(X, Y, Z, 20)
 
-    mids = np.zeros([2, len(boxes)])
 
+    trace = np.array(trace)
+    ax.plot(trace[:,0], trace[:,1], 'g--', linewidth=0.75, alpha=1)
+
+    z_mids = np.array(func(trace[:,0], trace[:,1]))
+    ax.scatter(trace[:,0], trace[:,1], c=z_mids, marker='o', s=20)
+
+    mids = np.zeros([2, len(boxes)])
     for i in range(len(boxes)):
         mids[0, i] = boxes[i][0].mid
         mids[1, i] = boxes[i][1].mid
-        ax.add_patch(Rectangle((boxes[i][0].a, boxes[i][1].a), boxes[i][0].wid, boxes[i][1].wid, fill=False, edgecolor = 'blue', alpha=0.5))
+        ax.add_patch(Rectangle((boxes[i][0].a, boxes[i][1].a), boxes[i][0].wid, boxes[i][1].wid, fill=False, edgecolor = 'red'))
+    
+    ax.scatter(mids[0], mids[1], marker='+', s=20)
 
-    trace = np.array(trace)
-    ax.plot(trace[:,0], trace[:,1], 'g--', alpha=0.9, linewidth=0.5)
-
-    z_mids = np.array(func(mids[0], mids[1]))
-    ax.scatter(mids[0], mids[1], c=z_mids, marker='+')
 
 
 optim(booth, [[-10, 10], [-10, 10]], 0.01)
